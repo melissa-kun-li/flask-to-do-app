@@ -35,3 +35,27 @@
 {
     background-color: aliceblue;
 }
+
+.btn-secondary
+{
+    color: #6c757d;
+    background-color: wheat;
+}
+
+h5
+{
+    padding-top: 5px;
+    padding-right: 570px;
+    margin-block-start: 0cm;
+    margin-block-end: 0cm;
+}
+
+.task-text
+{
+    margin-block-start: 5px;
+}
+
+.accordion-body
+{
+    text-align: center;
+}

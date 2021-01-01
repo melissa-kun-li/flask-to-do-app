@@ -25,7 +25,10 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Task" aria-label="Task name" aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                      <a href="/add-task/"><button class="btn btn-outline-secondary" type="button">Add</button></a>
+                        <!-- Submit form POST method using a button -->
+                        <form action = "/add-task/" method = "post">
+                            <button type = "submit" class="btn btn-outline-secondary" type="button">Add</button>
+                        </form>
                     </div>
                     </div>
             </div>
@@ -39,7 +42,34 @@
           </h2>
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <div class = "task-text">This is task 1
+                    </div>
+                    <form action = "/update-task/" method = "post">
+                        <button type = "submit" class="btn btn-secondary me-md-2" type="button">Update</button>
+                    </form>
+                    <form action = "/delete-task/" method = "post">
+                        <button type = "submit" class="btn btn-secondary" type="button">Delete</button>
+                    </form>
+                  </div>
+
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <div class = "task-text">This is task 2
+                    </div>
+                    <form action = "/update-task/" method = "post">
+                        <button type = "submit" class="btn btn-secondary me-md-2" type="button">Update</button>
+                    </form>
+                    <form action = "/delete-task/" method = "post">
+                        <button type = "submit" class="btn btn-secondary" type="button">Delete</button>
+                    </form>
+                  </div>
+
+                <!-- <div class = "input-group mb-3">
+                    <input class="form-control" type="text" placeholder="Disabled input" aria-label="Disabled input example" disabled>
+                    <button class="btn btn-secondary me-md-2" type="button">Update</button>
+                    <button class="btn btn-secondary" type="button">Delete</button>
+                </div> -->
+
             </div>
           </div>
         </div>

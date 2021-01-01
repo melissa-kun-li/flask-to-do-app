@@ -11,10 +11,22 @@ def todo():
     return render_template('todo.html')
 
 @app.route('/add-task/', methods = ['GET', 'POST']) # do i even need this route, can I just use the home route?
-def test():
+def add():
     # validate the task inputted? if it's less than 1 then flash an error? else: database
-    return 'Hi'
+    return 'Adding task'
 
+@app.route('/update-task/', methods = ['GET', 'POST'])
+def update():
+    return 'Updating Task'
+
+@app.route('/delete-task/', methods = ['GET', 'POST'])
+def delete():
+    return 'Deleting Task'
+
+@app.route('/clear-all-tasks/', methods = ['GET', 'POST'])
+def clear_all():
+    return 'Clearing all Tasks'
+    
 if __name__ == '__main__':
     # run app in Debug mode so don't have to restart manually after each change to code
     app.run(debug=True)
