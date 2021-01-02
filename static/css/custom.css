@@ -4,10 +4,7 @@
     margin: 100px auto;
     margin-block-start: 30px;
 }
-.input-group
-{
-    width: 760px;
-}
+
 .btn-outline-dark
 {
     width: 800px;
@@ -58,4 +55,20 @@ h5
 .accordion-body
 {
     text-align: center;
+}
+
+.test
+{
+    font-size: 0.9rem
+}
+
+.test2 > * 
+{
+    margin: 30px 0;
+}
+
+#add-form 
+{
+    width: 100%;
+    display: inline-flex;
 }
