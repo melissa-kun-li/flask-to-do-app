@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, request
+from flask import Flask, render_template, url_for, request, flash
 # create instance of Flask class
 app = Flask(__name__)
 
@@ -8,13 +8,17 @@ app.config['SECRET_KEY'] = 'ffc47654e084968728400edc57de4531' # import secrets, 
 # route() decorator tells Flask what URL to trigger function
 @app.route('/', methods = ['GET', 'POST'])
 def todo():
+    if request.method == 'POST':
+        task = request.form['task']
+        if len(task) == 0 or len(task) > 75:
+            flash('Task should be between 1 and 75 characters')
+    # query the database, show all the tasks still
     return render_template('todo.html')
 
-@app.route('/add-task/', methods = ['GET', 'POST']) # do i even need this route, can I just use the home route?
-def add():
-    # validate the task inputted? if it's less than 1 then flash an error? else: database
-    return 'Adding task'
+# head and alert should be part of a base.html because everything will need it, take out of todo.html
+# need an edit html
 
+# use id of the task in the url from the database? or how will it know what to update and what to delete?
 @app.route('/update-task/', methods = ['GET', 'POST'])
 def update():
     return 'Updating Task'

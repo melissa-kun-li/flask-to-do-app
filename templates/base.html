@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- bootstrap css -->
+    <link href = " {{ url_for('static', filename='css/bootstrap.min.css') }} " rel = "stylesheet" >
+    <link href = " {{ url_for('static', filename= 'css/custom.css') }} " rel = "stylesheet" > 
+    <link rel = "shortcut icon" href = "{{ url_for('static', filename = 'favicon.ico') }}">
+</head>
+<body>
+    {% for message in get_flashed_messages() %}
+        <div class = "alert alert-warning" role="alert">Task should be between 1 and 75 characters</div>
+    {% endfor %}
+    {% block content %}{% endblock content %}
+</body>
+</html>

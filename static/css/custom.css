@@ -33,13 +33,6 @@
     background-color: wheat;
 }
 
-h5 {
-    padding-top: 5px;
-    padding-right: 570px;
-    margin-block-start: 0cm;
-    margin-block-end: 0cm;
-}
-
 .task-text {
     text-align: left !important;
     margin-block-start: 5px;
@@ -68,12 +61,4 @@ h5 {
 
 .inline-form {
     display: inline;
-}
-
-.clear-all {
-    text-align: center;
-}
-
-#add-form {
-    display: inline-flex;
 }
