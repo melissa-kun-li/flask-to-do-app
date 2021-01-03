@@ -42,32 +42,44 @@
           </h2>
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
             <div class="test2 accordion-body">
-                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <div class = "task-text">This is task 1
-                    </div>
-                    <form action = "/update-task/" method = "post">
+              <!-- list outer, span for forms, display inline form buttons-->
+                <ul class = "task-text">This is task 1
+                <span class = "float-right">
+                    <form action = "/update-task/" method = "post" style = "display: inline !important;">
                         <button type = "submit" class="test btn btn-secondary me-md-2" type="button">Update</button>
                     </form>
-                    <form action = "/delete-task/" method = "post">
+                    <form action = "/delete-task/" method = "post" style = "display: inline !important;">
                         <button type = "submit" class="test btn btn-secondary" type="button">Delete</button>
                     </form>
-                  </div>
+                  </span>
+                </ul>
+                <!-- delete below lists after write backend-->
+                <ul class = "task-text">This is task 2
+                  <span class = "float-right">
+                      <form action = "/update-task/" method = "post" style = "display: inline !important;">
+                          <button type = "submit" class="test btn btn-secondary me-md-2" type="button">Update</button>
+                      </form>
+                      <form action = "/delete-task/" method = "post" style = "display: inline !important;">
+                          <button type = "submit" class="test btn btn-secondary" type="button">Delete</button>
+                      </form>
+                    </span>
+                  </ul>
 
-                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <div class = "task-text">This is task 2
-                    </div>
-                    <form action = "/update-task/" method = "post">
-                        <button type = "submit" class="test btn btn-secondary me-md-2" type="button">Update</button>
-                    </form>
-                    <form action = "/delete-task/" method = "post">
-                        <button type = "submit" class="test btn btn-secondary" type="button">Delete</button>
-                    </form>
-                  </div>
+                  <ul class = "task-text">This is task 3
+                    <span class = "float-right">
+                        <form action = "/update-task/" method = "post" style = "display: inline !important;">
+                            <button type = "submit" class="test btn btn-secondary me-md-2" type="button">Update</button>
+                        </form>
+                        <form action = "/delete-task/" method = "post" style = "display: inline !important;">
+                            <button type = "submit" class="test btn btn-secondary" type="button">Delete</button>
+                        </form>
+                      </span>
+                    </ul>
             </div>
           </div>
         </div>
         <form action = "/clear-all-tasks/" method = "post">
-            <button type="submit" class="btn btn-outline-dark">Clear all Tasks</button>
+            <button type="submit" class="btn btn-outline-dark clear-all">Clear all Tasks</button>
         </form>
       </div>
 
