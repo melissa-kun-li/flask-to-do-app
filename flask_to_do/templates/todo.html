@@ -24,7 +24,6 @@
             </div>
           </div>
         </div>
-
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingTwo">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -34,37 +33,17 @@
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
             <div class="test2 accordion-body">
               <!-- list outer, span for forms, display inline form buttons-->
-                <ul class = "task-text">Need to head to 222 Albert St and give Kshitij a big smooch test test test
+              {% for task in tasks %} 
+              <ul class = "task-text"> 
+                  {{ task.task }}
                 <span class = "float-right">
-                    <form class = "inline-form" action = "/update/" method = "post">
-                        <button type = "submit" class="test btn btn-secondary me-md-2" type="button">Update</button>
-                    </form>
-                    <form class = "inline-form" action = "/delete/" method = "post">
+                    <a href ="/update/{{ task.id }}"><button class="test btn btn-secondary me-md-2" type="button">Update</button></a>
+                    <form class = "inline-form" action = "/delete/{{ task.id }}" method = "post">
                         <button type = "submit" class="test btn btn-secondary" type="button">Delete</button>
                     </form>
                   </span>
                 </ul>
-                <!-- delete below lists after write backend-->
-                <ul class = "task-text">This is task 2
-                  <span class = "float-right">
-                      <form action = "/update/" method = "post" style = "display: inline !important;">
-                          <button type = "submit" class="test btn btn-secondary me-md-2" type="button">Update</button>
-                      </form>
-                      <form action = "/delete/" method = "post" style = "display: inline !important;">
-                          <button type = "submit" class="test btn btn-secondary" type="button">Delete</button>
-                      </form>
-                    </span>
-                  </ul>
-                  <ul class = "task-text">This is task 3
-                    <span class = "float-right">
-                        <form action = "/update/" method = "post" style = "display: inline !important;">
-                            <button type = "submit" class="test btn btn-secondary me-md-2" type="button">Update</button>
-                        </form>
-                        <form action = "/delete/" method = "post" style = "display: inline !important;">
-                            <button type = "submit" class="test btn btn-secondary" type="button">Delete</button>
-                        </form>
-                      </span>
-                    </ul>
+              {% endfor %}
             </div>
           </div>
         </div>
