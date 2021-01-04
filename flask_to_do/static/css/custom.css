@@ -71,3 +71,8 @@
 .update-group {
     text-align: center;
 }
+
+#update-error {
+    width: 385px;
+    margin-left: 370px;
+}
