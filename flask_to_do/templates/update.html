@@ -9,5 +9,8 @@
             <input type="text" name = 'task' class="form-control" id = "update-task-1" placeholder="Update Task" aria-label="Task name" aria-describedby="basic-addon2">
             <button class="btn btn-outline-secondary" type = "submit" id = "add-button" >Update</button>
         </form>
+        {% for message in get_flashed_messages() %}
+        <div class = "alert alert-danger" role="alert" id = "update-error">{{ message }}</div>
+        {% endfor %}
     </div>
 {% endblock content %}
