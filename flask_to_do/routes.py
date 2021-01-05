@@ -1,7 +1,6 @@
 from flask import render_template, url_for, request, flash, redirect
 from flask_to_do import app, db, models
 from flask_to_do.models import Task
-from sqlalchemy import exc
 
 @app.route('/', methods = ['GET', 'POST'])
 # check for task name uniqueness, flash error msg
