@@ -38,11 +38,7 @@ def update(task_id):
             db.session.commit()
             return redirect(url_for('todo')) 
         else:
-<<<<<<< HEAD
             flash('Task not updated: task name is already used')
-=======
-            flash('Task not added: task name is already used')
->>>>>>> f99b0231b67553d525389ac67c23b450b7aa100b
             return render_template('update.html', task = old)
     else:
         task = Task.query.filter_by(id = task_id).first()
