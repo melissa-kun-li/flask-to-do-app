@@ -1,25 +1,30 @@
-from flask import render_template, url_for, request, flash
-from flask_to_do import app
+from flask import render_template, url_for, request, flash, redirect
+from flask_to_do import app, db, models
 from flask_to_do.models import Task
 
-# route() decorator tells Flask what URL to trigger function
 @app.route('/', methods = ['GET', 'POST'])
+# check for task name uniqueness, flash error msg
 def todo():
     if request.method == 'POST':
         task = request.form['task']
         if len(task) == 0 or len(task) > 75:
-            flash('Task should be between 1 and 75 characters')
-    # else if request.method == 'GET':
-        # query the database, show all the tasks still
-        # return this stuff
-    # database, then return redirect(url_for('update'), task_id = ?)
-    return render_template('todo.html')
+            flash('Task not added: task should be between 1 and 75 characters')
+            return redirect(url_for('todo'))
+        new_task = Task(task = task)
+        match = Task.query.filter_by(task = task).first()
+        if match == None:
+            db.session.add(new_task)
+            db.session.commit()
+            return redirect(url_for('todo')) 
+        else:
+            flash('Task not added: task name is already used')
+            return redirect(url_for('todo'))
+    else:
+        tasks = Task.query.all() 
+        return render_template('todo.html', tasks = tasks)
 
-# need an edit.html
-
-# use id of the task in the url from the database? 
 @app.route('/update/<task_id>', methods = ['GET', 'POST'])
-# <> pass to value as parameter
+# check for task name uniqueness, flash error msg
 def update(task_id):
     if request.method == 'POST':
         old = Task.query.filter_by(id = task_id).first()
@@ -33,17 +38,25 @@ def update(task_id):
             db.session.commit()
             return redirect(url_for('todo')) 
         else:
+<<<<<<< HEAD
             flash('Task not updated: task name is already used')
+=======
+            flash('Task not added: task name is already used')
+>>>>>>> f99b0231b67553d525389ac67c23b450b7aa100b
             return render_template('update.html', task = old)
     else:
         task = Task.query.filter_by(id = task_id).first()
         return render_template('update.html', task = task)
 
-@app.route('/delete/', methods = ['GET', 'POST'])
-def delete():
-    return 'Deleting Task'
+@app.route('/delete/<task_id>', methods = ['POST'])
+def delete(task_id):
+    task = Task.query.filter_by(id = task_id).first()
+    db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for('todo'))
 
-@app.route('/clear-all/', methods = ['GET', 'POST'])
-# db.dropall()?
+@app.route('/clear-all/', methods = ['POST'])
 def clear_all():
-    return 'Clearing all Tasks'
+    models.Task.query.delete()
+    db.session.commit() # need to commit
+    return redirect(url_for('todo'))
