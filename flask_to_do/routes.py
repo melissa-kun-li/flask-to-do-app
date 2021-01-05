@@ -1,7 +1,6 @@
 from flask import render_template, url_for, request, flash, redirect
 from flask_to_do import app, db, models
 from flask_to_do.models import Task
-from sqlalchemy import exc
 
 @app.route('/', methods = ['GET', 'POST'])
 # check for task name uniqueness, flash error msg
@@ -12,11 +11,12 @@ def todo():
             flash('Task not added: task should be between 1 and 75 characters')
             return redirect(url_for('todo'))
         new_task = Task(task = task)
-        db.session.add(new_task)
-        try: 
+        match = Task.query.filter_by(task = task).first()
+        if match == None:
+            db.session.add(new_task)
             db.session.commit()
             return redirect(url_for('todo')) 
-        except exc.IntegrityError:
+        else:
             flash('Task not added: task name is already used')
             return redirect(url_for('todo'))
     else:
@@ -29,18 +29,15 @@ def update(task_id):
     if request.method == 'POST':
         old = Task.query.filter_by(id = task_id).first()
         new_task = request.form['task']
-        if old.task == new_task:
-            flash('Task not added: task name is already used')
-            return render_template('update.html', task = old)
         if len(new_task) == 0 or len(new_task) > 75:
             flash('Task should be between 1 and 75 characters')
             return render_template('update.html', task = old)
-        old.task = new_task
-        try:
+        match = Task.query.filter_by(task = new_task).first()
+        if match == None:
+            old.task = new_task
             db.session.commit()
             return redirect(url_for('todo')) 
-        except exc.IntegrityError:
-            db.session.rollback()
+        else:
             flash('Task not added: task name is already used')
             return render_template('update.html', task = old)
     else:
