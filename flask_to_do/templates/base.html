@@ -10,6 +10,14 @@
     <link rel = "shortcut icon" href = "{{ url_for('static', filename = 'favicon.ico') }}">
 </head>
 <body>
+    <h1 class = 'title'>To Do List</h1>
+    <br>
+    <nav>
+        <ul>
+            <li><a href = "/">Home</a></li>
+            <li><a href = "/">Login</a></li>
+        </ul>
+    </nav>
     {% block content %}{% endblock content %}
 </body>
 </html>

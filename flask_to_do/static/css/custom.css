@@ -68,11 +68,41 @@
     display: inline-flex;
 }
 
-.update-group {
-    text-align: center;
+#update-error {
+    width: 350px;
 }
 
-#update-error {
-    width: 385px;
-    margin-left: 370px;
+body {
+    margin: auto;
+    max-width: 800px;
+}
+
+nav ul {
+    list-style-type: none;
+    background-color: #414a4c;
+    overflow: hidden;
+    padding-left: 0px;
+}
+
+nav li {
+    float: left;
+}
+
+nav li a {
+    display: block;
+    padding: 6px 12px;
+    text-decoration: none; 
+    color: azure;
+}
+
+nav li a:hover {
+    background-color: #232b2b;
+}
+
+a:hover{
+    color: azure;
+}
+
+.alert {
+    padding: 0.75rem 0.75rem;
 }
