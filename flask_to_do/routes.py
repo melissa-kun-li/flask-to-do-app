@@ -1,6 +1,7 @@
 from flask import render_template, url_for, request, flash, redirect
 from flask_to_do import app, db, models
 from flask_to_do.models import Task
+from flask_to_do.forms import RegisterForm, LoginForm
 
 @app.route('/', methods = ['GET', 'POST'])
 # check for task name uniqueness, flash error msg
@@ -56,3 +57,16 @@ def clear_all():
     models.Task.query.delete()
     db.session.commit() # need to commit
     return redirect(url_for('todo'))
+
+@app.route('/register', methods = ['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        return redirect(url_for('todo'))
+    return render_template('register.html', form = form)
+
+# make login.html
+@app.route('/login', methods = ['GET'])
+def login():
+    form = LoginForm()
+    return render_template('login.html', form = form)

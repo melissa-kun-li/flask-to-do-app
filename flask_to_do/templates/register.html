@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock title %}
+{% block content %}
+<h3>Register</h3>
+<h6> Note: If you're using Google Chrome and testing with a common password, Chrome may warn you if the password you're using has been previously compromised.</h6>
+<br>    
+    <form method = "POST" action ="">
+        {{ form.hidden_tag() }}
+        <div class = "mb-3">
+            {{ form.name.label(class="form-label")}}
+            {{ form.name(class="form-control", id = "register-form") }}
+        </div>
+        <div class = "mb-3">
+            {{ form.username.label(class="form-label")}}
+            {{ form.username(class="form-control", id = "register-form") }}
+            {% if form.username.errors %}
+                <div class = "alert alert-danger" id = "register-alert">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class = "mb-3">
+            {{ form.password.label(class="form-label")}}
+            {{ form.password(class="form-control", id = "register-form") }}
+        </div>
+        <div class = "mb-3">
+            {{ form.confirm_password.label(class="form-label")}}
+            {{ form.confirm_password(class="form-control", id = "register-form") }}
+            {% if form.confirm_password.errors %}
+                <div class = "alert alert-danger" id = "register-alert">
+                    {% for error in form.confirm_password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class = "mb-3">
+            {{ form.submit(class="btn btn-outline-secondary") }}
+        </div>
+    </form>
+{% endblock content %}

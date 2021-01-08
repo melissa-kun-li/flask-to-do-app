@@ -2,7 +2,7 @@
 {% block title %}Update Task{% endblock title %}
 {% block content %}
 <h3>Update Task</h3>
-<h5> old task: {{ task.task }} </h5>
+<h6> Old task: {{ task.task }} </h6>
     <div class="update-group">
         <form action = "/update/{{ task.id }}" method = "post" id = "update-form">
             <input type="text" name = 'task' class="form-control" id = "update-task-1" placeholder="Update Task" aria-label="Task name" aria-describedby="basic-addon2">
