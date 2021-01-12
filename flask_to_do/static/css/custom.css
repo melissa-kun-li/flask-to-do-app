@@ -13,6 +13,8 @@
     text-align: center;
     margin: 100px auto;
     margin-block-end: 0px;
+    font-family: 'Inter', sans-serif;
+    color: #414a4c;
 }
 
 .btn-outline-secondary {
@@ -111,3 +113,14 @@ a:hover{
     width: 40%;
 }
 
+body, .main {
+    background: #e1e6f3;
+}
+
+.main {
+    font-family: 'Avenir Next', 'sans-serif';
+}
+
+.accordion-button:not(.collapsed) {
+    color: #414a4c;
+}
