@@ -20,11 +20,6 @@
 .btn-outline-secondary {
     background-color: wheat;
 }
-/* body{background-color: #B3653F;} */
-
-/* #6C9A8B */
-/* #AB446B */
-
 
 .accordion-button:active, .accordion-button:not(.collapsed), .accordion-button:hover, .accordion-button:focus {
     background-color: aliceblue;
@@ -114,7 +109,7 @@ a:hover{
 }
 
 body, .main {
-    background: #e1e6f3;
+    background-color: #e1e6f3;
 }
 
 .main {
