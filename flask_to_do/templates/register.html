@@ -9,6 +9,13 @@
         <div class = "mb-3">
             {{ form.name.label(class="form-label")}}
             {{ form.name(class="form-control", id = "register-form") }}
+            {% if form.name.errors %}
+            <div class = "alert alert-danger" id = "register-alert">
+                {% for error in form.name.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
         </div>
         <div class = "mb-3">
             {{ form.username.label(class="form-label")}}
@@ -20,6 +27,9 @@
                     {% endfor %}
                 </div>
             {% endif %}
+            {% for message in get_flashed_messages() %}
+                <div class = "alert alert-danger" role="alert" id = "register-alert">{{ message }}</div>
+            {% endfor %}
         </div>
         <div class = "mb-3">
             {{ form.password.label(class="form-label")}}

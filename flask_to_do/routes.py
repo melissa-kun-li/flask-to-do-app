@@ -1,7 +1,8 @@
 from flask import render_template, url_for, request, flash, redirect
 from flask_to_do import app, db, models
-from flask_to_do.models import Task
+from flask_to_do.models import Task, User
 from flask_to_do.forms import RegisterForm, LoginForm
+from flask_login import login_user, current_user
 
 @app.route('/', methods = ['GET', 'POST'])
 # check for task name uniqueness, flash error msg
@@ -61,9 +62,26 @@ def clear_all():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     form = RegisterForm()
-    if form.validate_on_submit():
+    # if user is already logged in:
+    if current_user.is_authenticated:
         return redirect(url_for('todo'))
-    return render_template('register.html', form = form)
+    if form.validate_on_submit():
+        # CHECK IF USERNAME IS UNIQUE: 
+            # user = User(username = form.username.data)
+            match = User.query.filter_by(username = form.username.data).first()
+            if match == None: 
+                user = User(name = form.name.data, username = form.username.data)
+                # IMPORTANT: don't store original password; store hashed passwords!
+                user.set_password(form.password.data)
+                db.session.add(user)
+                db.session.commit()
+            else:
+                # flash message in the register.html
+                flash('Username already in use')
+                return redirect(url_for('register'))
+            return redirect(url_for('todo')) # return to home page?
+    else:
+        return render_template('register.html', form = form)
 
 # make login.html
 @app.route('/login', methods = ['GET'])
