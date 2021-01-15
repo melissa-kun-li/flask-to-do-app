@@ -21,7 +21,7 @@
         {% endif %} -->
 
         {% if current_user.is_authenticated %}
-            <h1 class = 'title'>{{ user.name }}'s To Do List</h1>
+            <h1 class = 'title'>{{ current_user.name }}'s To Do List</h1>
         {% else %}
             <h1 class = 'title'>To Do List</h1>
         {% endif %}

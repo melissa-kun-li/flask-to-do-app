@@ -1,12 +1,12 @@
-from flask_to_do import db
+from flask_to_do import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_to_do import login_manager # CHANGE LOCATION OF LOGIN MANAGER
+from flask_login import UserMixin
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     task = db.Column(db.String(75), unique = True) 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(25))
     username = db.Column(db.String(25), unique = True)
@@ -18,8 +18,10 @@ class User(db.Model):
     # returns True if password hash matches password user entered; else returns False
     def validate_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
 
-# WHERE SHOULD THIS GO?
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get(user_id)
+
+

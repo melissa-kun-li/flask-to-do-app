@@ -13,8 +13,8 @@ def todo():
             flash('Task not added: task should be between 1 and 75 characters')
             return redirect(url_for('todo'))
         new_task = Task(task = task)
-        match = Task.query.filter_by(task = task).first()
-        if match == None:
+        entry = Task.query.filter_by(task = task).first()
+        if entry == None:
             db.session.add(new_task)
             db.session.commit()
             return redirect(url_for('todo')) 
@@ -66,20 +66,21 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('todo'))
     if form.validate_on_submit():
-        # CHECK IF USERNAME IS UNIQUE: 
-            # user = User(username = form.username.data)
-            match = User.query.filter_by(username = form.username.data).first()
-            if match == None: 
+        if request.method == 'POST':
+            user = User.query.filter_by(username = form.username.data).first()
+            if user == None: 
                 user = User(name = form.name.data, username = form.username.data)
                 # IMPORTANT: don't store original password; store hashed passwords!
                 user.set_password(form.password.data)
                 db.session.add(user)
                 db.session.commit()
+                # saves cookie, prevents user from being logged out when they chose their browser
+                login_user(user, remember = True)
             else:
                 # flash message in the register.html
                 flash('Username already in use')
                 return redirect(url_for('register'))
-            return redirect(url_for('todo')) # return to home page?
+            return redirect(url_for('todo')) 
     else:
         return render_template('register.html', form = form)
 
