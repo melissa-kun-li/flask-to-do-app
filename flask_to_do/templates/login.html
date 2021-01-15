@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock title %}
+{% block content %}
+<h3>Login</h3>
+<form method = "POST" action ="">
+    {{ form.hidden_tag() }}
+    <div class = "mb-3">
+        {{ form.username.label(class="form-label")}}
+        {{ form.username(class="form-control", id = "register-form") }}
+        {% if form.username.errors %}
+            <div class = "alert alert-danger" id = "register-alert">
+                {% for error in form.username.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% for message in get_flashed_messages() %}
+            <div class = "alert alert-danger" role="alert" id = "register-alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+    <div class = "mb-3">
+        {{ form.password.label(class="form-label")}}
+        {{ form.password(class="form-control", id = "register-form") }}
+    </div>
+    <div class = "mb-3">
+        {{ form.submit(class="btn btn-outline-secondary") }}
+    </div>
+</form>
+{% endblock content %}

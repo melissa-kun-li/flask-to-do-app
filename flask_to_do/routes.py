@@ -2,7 +2,7 @@ from flask import render_template, url_for, request, flash, redirect
 from flask_to_do import app, db, models
 from flask_to_do.models import Task, User
 from flask_to_do.forms import RegisterForm, LoginForm
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, logout_user
 
 @app.route('/', methods = ['GET', 'POST'])
 # check for task name uniqueness, flash error msg
@@ -34,8 +34,8 @@ def update(task_id):
         if len(new_task) == 0 or len(new_task) > 75:
             flash('Task should be between 1 and 75 characters')
             return render_template('update.html', task = old)
-        match = Task.query.filter_by(task = new_task).first()
-        if match == None:
+        entry = Task.query.filter_by(task = new_task).first()
+        if entry == None:
             old.task = new_task
             db.session.commit()
             return redirect(url_for('todo')) 
@@ -66,26 +66,43 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('todo'))
     if form.validate_on_submit():
-        if request.method == 'POST':
-            user = User.query.filter_by(username = form.username.data).first()
-            if user == None: 
-                user = User(name = form.name.data, username = form.username.data)
-                # IMPORTANT: don't store original password; store hashed passwords!
-                user.set_password(form.password.data)
-                db.session.add(user)
-                db.session.commit()
-                # saves cookie, prevents user from being logged out when they chose their browser
-                login_user(user, remember = True)
-            else:
-                # flash message in the register.html
-                flash('Username already in use')
-                return redirect(url_for('register'))
-            return redirect(url_for('todo')) 
-    else:
-        return render_template('register.html', form = form)
+        user = User.query.filter_by(username = form.username.data).first()
+        if user == None: 
+            user = User(name = form.name.data, username = form.username.data)
+            # IMPORTANT: don't store original password; store hashed passwords!
+            user.set_password(form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            # saves cookie, prevents user from being logged out when they close their browser
+            login_user(user, remember = True)
+        else:
+            # flash message in the register.html
+            flash('Username already in use. Please enter a different username')
+            return redirect(url_for('register'))
+        return redirect(url_for('todo')) 
+    return render_template('register.html', form = form)
 
-# make login.html
-@app.route('/login', methods = ['GET'])
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
     form = LoginForm()
+    if current_user.is_authenticated:
+        return redirect(url_for('todo'))
+    if form.validate_on_submit:
+        if request.method == 'POST': 
+            user = User.query.filter_by(username = form.username.data).first()
+            if user and user.validate_password(form.password.data):
+                login_user(user, remember = True)
+                next_page = request.args.get('next')
+                # if next_page == None, redirect to home page
+                return redirect(next_page) if next_page else redirect(url_for('todo'))
+            else:
+                flash("Username and password didn't match our records. Please try again")
+                return redirect(url_for('login'))
     return render_template('login.html', form = form)
+
+@app.route('/logout', methods = ['GET'])
+def logout():
+    logout_user()
+    return redirect(url_for('todo'))
+
+# @app.route('/settings', methods)

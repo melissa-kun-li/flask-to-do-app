@@ -19,9 +19,9 @@ class User(db.Model, UserMixin):
     def validate_password(self, password):
         return check_password_hash(self.password_hash, password)
     
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(user_id)
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 
 

@@ -12,14 +12,6 @@
 </head>
 <body>
     <div class="main">
-        <!-- {% if current_user %}
-            {% if current_user.is_authenticated %}
-                <h1 class = 'title'>{{ current_user.name }}'s To Do List</h1>
-            {% endif %}
-        {% else %}
-            <h1 class = 'title'>To Do List</h1>
-        {% endif %} -->
-
         {% if current_user.is_authenticated %}
             <h1 class = 'title'>{{ current_user.name }}'s To Do List</h1>
         {% else %}
@@ -29,8 +21,13 @@
     <nav>
         <ul>
             <li><a href = "{{ url_for('todo') }}">Home</a></li>
-            <li><a href = "{{ url_for ('login') }}">Login</a></li>
-            <li><a href = "{{ url_for ('register') }}">Register</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href = "{{ url_for ('logout') }}">Logout</a></li>
+                <!-- Also a settings page -->
+            {% else %}
+                <li><a href = "{{ url_for ('login') }}">Login</a></li>
+                <li><a href = "{{ url_for ('register') }}">Register</a></li>
+            {% endif %}
         </ul>
     </nav>
     {% block content %}{% endblock content %}
