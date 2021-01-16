@@ -5,28 +5,35 @@ from flask_to_do.forms import RegisterForm, LoginForm
 from flask_login import login_user, current_user, logout_user
 
 @app.route('/', methods = ['GET', 'POST'])
-# check for task name uniqueness, flash error msg
 def todo():
     if request.method == 'POST':
-        task = request.form['task']
-        if len(task) == 0 or len(task) > 75:
-            flash('Task not added: task should be between 1 and 75 characters')
-            return redirect(url_for('todo'))
-        new_task = Task(task = task)
-        entry = Task.query.filter_by(task = task).first()
-        if entry == None:
-            db.session.add(new_task)
-            db.session.commit()
-            return redirect(url_for('todo')) 
+        if current_user.is_authenticated:
+            task = request.form['task']
+            if len(task) == 0 or len(task) > 75:
+                flash('Task not added: task should be between 1 and 75 characters')
+                return redirect(url_for('todo'))
+            user = User.query.filter_by(name = current_user.name).first()
+            entry = Task.query.filter_by(task = task, user = user).first()
+            if entry == None:
+                new_task = Task(task = task, user = user)
+                db.session.add(new_task)
+                db.session.commit()
+                return redirect(url_for('todo')) 
+            else:
+                flash('Task not added: task name is already used')
+                return redirect(url_for('todo'))
         else:
-            flash('Task not added: task name is already used')
+            flash('Please register or signup for an account to get your own To Do List!')
             return redirect(url_for('todo'))
     else:
-        tasks = Task.query.all() 
+        if current_user.is_authenticated:
+            tasks = Task.query.filter_by(user_id = current_user.id).all()
+            # tasks = Task.query.all()
+        else:
+            tasks = []
         return render_template('todo.html', tasks = tasks)
 
 @app.route('/update/<task_id>', methods = ['GET', 'POST'])
-# check for task name uniqueness, flash error msg
 def update(task_id):
     if request.method == 'POST':
         old = Task.query.filter_by(id = task_id).first()
@@ -55,10 +62,16 @@ def delete(task_id):
 
 @app.route('/clear-all/', methods = ['POST'])
 def clear_all():
-    models.Task.query.delete()
-    db.session.commit() # need to commit
+    if current_user.is_authenticated:
+    # delete all tasks with user_id = current_user.id
+        Task.query.filter_by(user_id = current_user.id).delete()
+        db.session.commit() 
+    else:
+        flash('Please register or signup for an account to get your own To Do List!')
+        return redirect(url_for('todo'))
     return redirect(url_for('todo'))
 
+# make username case insensitive? 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -69,7 +82,7 @@ def register():
         user = User.query.filter_by(username = form.username.data).first()
         if user == None: 
             user = User(name = form.name.data, username = form.username.data)
-            # IMPORTANT: don't store original password; store hashed passwords!
+            # IMPORTANT: don't store original password; store hashed passwords
             user.set_password(form.password.data)
             db.session.add(user)
             db.session.commit()
