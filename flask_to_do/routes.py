@@ -61,15 +61,15 @@ def update(task_id):
 
 @app.route('/delete/<task_id>', methods = ['POST'])
 def delete(task_id):
+    # page not found if get? 
     task = Task.query.filter_by(id = task_id, user_id = current_user.id).first()
     db.session.delete(task)
     db.session.commit()
     return redirect(url_for('todo'))
 
-@app.route('/clear-all/', methods = ['POST'])
+@app.route('/clear-all', methods = ['POST'])
 def clear_all():
     if current_user.is_authenticated:
-    # delete all tasks with user_id = current_user.id
         Task.query.filter_by(user_id = current_user.id).delete()
         db.session.commit() 
     else:
@@ -81,7 +81,6 @@ def clear_all():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     form = RegisterForm()
-    # if user is already logged in:
     if current_user.is_authenticated:
         return redirect(url_for('todo'))
     if form.validate_on_submit():
