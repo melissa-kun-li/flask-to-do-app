@@ -49,13 +49,16 @@ def update(task_id):
             flash('Task not updated: task name is already used')
             return render_template('update.html', task = old)
     else: # AttributeError: AnonymousUserMixin object has no attribute id if try to view without being signed in
-        task = Task.query.filter_by(id = task_id, user_id = current_user.id).first()
-        if task == None:
+        if current_user.is_authenticated:
+            task = Task.query.filter_by(id = task_id, user_id = current_user.id).first()
+            if task == None:
+                return redirect(url_for('todo'))
+                # future: page not found
+            return render_template('update.html', task = task)
+        else:
             return redirect(url_for('todo'))
             # future: page not found
-        else:
-            return render_template('update.html', task = task)
-        
+
 @app.route('/delete/<task_id>', methods = ['POST'])
 def delete(task_id):
     task = Task.query.filter_by(id = task_id, user_id = current_user.id).first()
