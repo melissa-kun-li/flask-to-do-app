@@ -3,6 +3,7 @@ from flask_to_do import app, db, models
 from flask_to_do.models import Task, User
 from flask_to_do.forms import RegisterForm, LoginForm
 from flask_login import login_user, current_user, logout_user
+from sqlalchemy.exc import ArgumentError
 
 @app.route('/', methods = ['GET', 'POST'])
 def todo():
@@ -12,10 +13,9 @@ def todo():
             if len(task) == 0 or len(task) > 75:
                 flash('Task not added: task should be between 1 and 75 characters')
                 return redirect(url_for('todo'))
-            user = User.query.filter_by(name = current_user.name).first()
-            entry = Task.query.filter_by(task = task, user = user).first()
+            entry = Task.query.filter_by(task = task, user_id = current_user.id).first()
             if entry == None:
-                new_task = Task(task = task, user = user)
+                new_task = Task(task = task, user_id = current_user.id)
                 db.session.add(new_task)
                 db.session.commit()
                 return redirect(url_for('todo')) 
@@ -27,8 +27,7 @@ def todo():
             return redirect(url_for('todo'))
     else:
         if current_user.is_authenticated:
-            tasks = Task.query.filter_by(user_id = current_user.id).all()
-            # tasks = Task.query.all()
+            tasks = current_user.tasks
         else:
             tasks = []
         return render_template('todo.html', tasks = tasks)
@@ -41,7 +40,7 @@ def update(task_id):
         if len(new_task) == 0 or len(new_task) > 75:
             flash('Task should be between 1 and 75 characters')
             return render_template('update.html', task = old)
-        entry = Task.query.filter_by(task = new_task).first()
+        entry = Task.query.filter_by(task = new_task, user_id = current_user.id).first()
         if entry == None:
             old.task = new_task
             db.session.commit()
@@ -49,13 +48,17 @@ def update(task_id):
         else:
             flash('Task not updated: task name is already used')
             return render_template('update.html', task = old)
-    else:
-        task = Task.query.filter_by(id = task_id).first()
-        return render_template('update.html', task = task)
-
+    else: # AttributeError: AnonymousUserMixin object has no attribute id if try to view without being signed in
+        task = Task.query.filter_by(id = task_id, user_id = current_user.id).first()
+        if task == None:
+            return redirect(url_for('todo'))
+            # future: page not found
+        else:
+            return render_template('update.html', task = task)
+        
 @app.route('/delete/<task_id>', methods = ['POST'])
 def delete(task_id):
-    task = Task.query.filter_by(id = task_id).first()
+    task = Task.query.filter_by(id = task_id, user_id = current_user.id).first()
     db.session.delete(task)
     db.session.commit()
     return redirect(url_for('todo'))

@@ -4,8 +4,9 @@ from flask_login import UserMixin
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    task = db.Column(db.String(75), unique = True) 
+    task = db.Column(db.String(75))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    __table__args = (db.UniqueConstraint('user_id', 'task'),) 
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
