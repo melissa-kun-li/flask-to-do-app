@@ -48,7 +48,7 @@ def update(task_id):
         else:
             flash('Task not updated: task name is already used')
             return render_template('update.html', task = old)
-    else: # AttributeError: AnonymousUserMixin object has no attribute id if try to view without being signed in
+    else: 
         if current_user.is_authenticated:
             task = Task.query.filter_by(id = task_id, user_id = current_user.id).first()
             if task == None:
