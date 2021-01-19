@@ -3,7 +3,7 @@ from flask_to_do import app, db, models
 from flask_to_do.models import Task, User
 from flask_to_do.forms import RegisterForm, LoginForm
 from flask_login import login_user, current_user, logout_user
-from sqlalchemy.exc import ArgumentError
+from werkzeug.exceptions import abort
 
 @app.route('/', methods = ['GET', 'POST'])
 def todo():
@@ -52,16 +52,13 @@ def update(task_id):
         if current_user.is_authenticated:
             task = Task.query.filter_by(id = task_id, user_id = current_user.id).first()
             if task == None:
-                return redirect(url_for('todo'))
-                # future: page not found
+                abort(404)
             return render_template('update.html', task = task)
         else:
-            return redirect(url_for('todo'))
-            # future: page not found
+            abort(404)
 
 @app.route('/delete/<task_id>', methods = ['POST'])
 def delete(task_id):
-    # page not found if get? 
     task = Task.query.filter_by(id = task_id, user_id = current_user.id).first()
     db.session.delete(task)
     db.session.commit()
@@ -122,5 +119,17 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('todo'))
+
+# error 405 method not allowed
+@app.errorhandler(405)
+def handle_405(error):
+    return render_template('error.html'), 405
+
+# error 404 Page Not Found
+@app.errorhandler(404)
+def handle_404(error):
+    return render_template('error.html'), 404
+
+
 
 # @app.route('/settings', methods)
