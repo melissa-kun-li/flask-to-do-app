@@ -10,7 +10,7 @@
             {{ form.name.label(class="form-label")}}
             {{ form.name(class="form-control", id = "register-form") }}
             {% if form.name.errors %}
-            <div class = "alert alert-danger" id = "register-alert">
+            <div class = "alert alert-danger form-alert">
                 {% for error in form.name.errors %}
                     {{ error }}
                 {% endfor %}
@@ -21,14 +21,14 @@
             {{ form.username.label(class="form-label")}}
             {{ form.username(class="form-control", id = "register-form") }}
             {% if form.username.errors %}
-                <div class = "alert alert-danger" id = "register-alert">
+                <div class = "alert alert-danger form-alert">
                     {% for error in form.username.errors %}
                         {{ error }}
                     {% endfor %}
                 </div>
             {% endif %}
             {% for message in get_flashed_messages() %}
-                <div class = "alert alert-danger" role="alert" id = "register-alert">{{ message }}</div>
+                <div class = "alert alert-danger form-alert" role="alert">{{ message }}</div>
             {% endfor %}
         </div>
         <div class = "mb-3">
@@ -39,7 +39,7 @@
             {{ form.confirm_password.label(class="form-label")}}
             {{ form.confirm_password(class="form-control", id = "register-form") }}
             {% if form.confirm_password.errors %}
-                <div class = "alert alert-danger" id = "register-alert">
+                <div class = "alert alert-danger form-alert">
                     {% for error in form.confirm_password.errors %}
                         {{ error }}
                     {% endfor %}

@@ -7,15 +7,8 @@
     <div class = "mb-3">
         {{ form.username.label(class="form-label")}}
         {{ form.username(class="form-control", id = "register-form") }}
-        {% if form.username.errors %}
-            <div class = "alert alert-danger" id = "register-alert">
-                {% for error in form.username.errors %}
-                    {{ error }}
-                {% endfor %}
-            </div>
-        {% endif %}
         {% for message in get_flashed_messages() %}
-            <div class = "alert alert-danger" role="alert" id = "register-alert">{{ message }}</div>
+            <div class = "alert alert-danger form-alert" role="alert">{{ message }}</div>
         {% endfor %}
     </div>
     <div class = "mb-3">
