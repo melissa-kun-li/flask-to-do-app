@@ -129,7 +129,3 @@ def handle_405(error):
 @app.errorhandler(404)
 def handle_404(error):
     return render_template('error.html'), 404
-
-
-
-# @app.route('/settings', methods)
