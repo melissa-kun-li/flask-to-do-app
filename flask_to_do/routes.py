@@ -104,7 +104,8 @@ def login():
         return redirect(url_for('todo'))
     if form.validate_on_submit:
         if request.method == 'POST': 
-            user = User.query.filter_by(username = form.username.data).first()
+            username = str(form.username.data).lower()
+            user = User.query.filter_by(username = username).first()
             if user and user.validate_password(form.password.data):
                 login_user(user, remember = True)
                 next_page = request.args.get('next')
