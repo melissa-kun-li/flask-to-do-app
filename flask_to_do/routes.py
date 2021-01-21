@@ -74,16 +74,16 @@ def clear_all():
         return redirect(url_for('todo'))
     return redirect(url_for('todo'))
 
-# make username case insensitive? 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     form = RegisterForm()
     if current_user.is_authenticated:
         return redirect(url_for('todo'))
     if form.validate_on_submit():
-        user = User.query.filter_by(username = form.username.data).first()
+        username = str(form.username.data).lower()
+        user = User.query.filter_by(username = username).first()
         if user == None: 
-            user = User(name = form.name.data, username = form.username.data)
+            user = User(name = form.name.data, username = username)
             # IMPORTANT: don't store original password; store hashed passwords
             user.set_password(form.password.data)
             db.session.add(user)
