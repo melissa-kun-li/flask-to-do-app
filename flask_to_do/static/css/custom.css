@@ -119,3 +119,9 @@ body, .main {
 .accordion-button:not(.collapsed) {
     color: #414a4c;
 }
+
+@media all and (max-width: 1280px) {
+    body, .accordion, .btn-outline-dark, #register-form {
+        width: 80vw;
+        }
+    }
