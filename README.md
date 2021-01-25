@@ -20,6 +20,7 @@ This to do list web app is built using Flask, PostgresSQL, and Bootstrap. I buil
 - HTML and CSS
 - how to customize Bootstrap
 - how to handle GET and POST requests
+- how to handle errors like HTTP 404 in Flask
 - using Flask-SQLAlchemy to easily switch between databases (went from SQlite -> MySQL -> Postgres)
 - validating user input and handling forms with Flask-WTF
 - password hashing
